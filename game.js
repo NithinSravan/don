@@ -1,24 +1,25 @@
 var numArray= [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40];
 var container = document.getElementsByClassName("container")[0];
 
-
-for(var i=0;i<20;i++)
-{
+var text;
+var num= document.getElementsByClassName("box");
+function display(){
+    for(var i=0;i<20;i++)
+    {
     const myDiv = document.createElement('div');
     container.appendChild(myDiv);
     myDiv.classList.add("box");
-    console.log(myDiv);
-}
-numberDisplay();
-var text;
-var num= document.getElementsByClassName("box");
-function numberDisplay(){
-//function to display numbers on grid
-for(var i=0;i<20;i++)
     const para =document.createElement("p");
     para.innerHTML=numArray[i+1];
-    num[i].appendChild(para);
+    num.appendChild(para);
+    console.log(myDiv);
+    }
 }
+
+
+
+//function to display numbers on grid
+
 
 //function numberChange(){
 //function to change numbers on grid
