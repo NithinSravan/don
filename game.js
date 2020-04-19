@@ -10,21 +10,21 @@ for(var i=0;i<20;i++)
     console.log(myDiv);
 }
 numberDisplay();
+var text;
+var num= document.getElementsByClassName("box");
 function numberDisplay(){
 //function to display numbers on grid
 for(var i=0;i<20;i++)
-    var num= document.getElementsByClassName("box")[i];
-    var para =document.createElement("p");
-    var text =document.createTextNode(numArray[i+1]);
-    para.appendChild(text);
-    num.appendChild(para);
+    const para =document.createElement("p");
+    para.innerHTML=numArray[i+1];
+    num[i].appendChild(para);
 }
 
-function numberChange(){
+//function numberChange(){
 //function to change numbers on grid
-}
+//}
 
 const box =document.querySelector("box");
 
-box.addEventListener('click',numberChange);
+//box.addEventListener('click',numberChange);
 
