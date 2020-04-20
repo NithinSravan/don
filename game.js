@@ -18,6 +18,7 @@ var container = document.getElementById("container");
         clearInterval(interval);
         container.removeChild(countBox);
         display();
+        event();
     }
 
     let newArray = shuffle(numArray);
@@ -37,7 +38,7 @@ var container = document.getElementById("container");
     
     }
 }
-event();
+
     function shuffle(arr){
      for (var i=arr.length-1;i>0;i--)
      {
@@ -48,14 +49,15 @@ event();
 }
 var number = document.getElementsByClassName("box");
     function event(){
-for(var i=0;i<20;i++){
-        number[i].addEventListener('click',numberChange(i));
+        for(var i=0;i<20;i++){
+            number[i].addEventListener('click',numberChange(i));
     }
 }
     function numberChange(i){
-        if(parseInt(number[i].innerHTML)===count)
+        var block= document.getElementsByClassName("number");
+        if(parseInt(block[i].innerHTML)===count)
         {
-            number[i].innerHTML=20+count;
+            block[i].innerHTML=20+count;
             count++;
         }
     }
