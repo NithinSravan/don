@@ -37,7 +37,7 @@ var container = document.getElementById("container");
     
     }
 }
-
+event();
     function shuffle(arr){
      for (var i=arr.length-1;i>0;i--)
      {
@@ -46,10 +46,12 @@ var container = document.getElementById("container");
      }
      return arr;
 }
-var number = document.getElementsByClassName("number");
-    for(var i=0;i<20;i++){
+var number = document.getElementsByClassName("box");
+    function event(){
+for(var i=0;i<20;i++){
         number[i].addEventListener('click',numberChange(i));
     }
+}
     function numberChange(i){
         if(parseInt(number[i].innerHTML)===count)
         {
