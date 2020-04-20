@@ -1,30 +1,58 @@
-var numArray= [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40];
-var container = document.getElementsByClassName("container")[0];
+var numArray =[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+var time = 3;
+var container = document.getElementById("container");
+    var count=1;
+    var text;
+    countDown();
+    var interval = setInterval(countDown,1000);
+    function countDown(){
+        const countBox=document.createElement('div');
+        container.appendChild(countBox);
+        countBox.innerHTML=time+"...";
+        container.removeChild(countBox);
+        time--;
+        if (time==0)
+            stopCountDown();
+    }
+    
+    function stopCountDown(){
+        clearInterval(interval);
+    }
 
-var text;
-function display(){
-    for(var i=0;i<20;i++)
-    {
-    const myDiv = document.createElement('div');
-    container.appendChild(myDiv);
-    myDiv.classList.add("box");
-    const para =document.createElement("p");
-    para.innerHTML=numArray[i+1];
-    myDiv.appendChild(para);
-    console.log(myDiv);
+    let newArray = shuffle(numArray);
+    display();
+    function display(){
+        for(var i=0;i<20;i++)
+        {
+  
+        const myDiv=document.createElement('div');
+        container.appendChild(myDiv);
+        myDiv.classList.add("box");
+        const para =document.createElement("p");
+        para.innerHTML=newArray[i];
+        myDiv.appendChild(para);
+        console.log(myDiv);
+    
     }
 }
 
-
-display();
-//function to display numbers on grid
-
-
-//function numberChange(){
-//function to change numbers on grid
-//}
-
-const box =document.querySelector("box");
-
-//box.addEventListener('click',numberChange);
-
+    function shuffle(arr){
+     for (var i=arr.length-1;i>0;i--)
+     {
+         j= Math.floor(Math.random()*(i+1));
+         [arr[j],arr[i]]=[arr[i],arr[j]];
+     }
+     return arr;
+}
+    
+    //     let number= document.getElementsByClassName("box");
+    //     number.addEventListener('click',numberChange);
+    // function numberChange(){
+    //     if(number.value==count)
+    //     {
+    //         number.innerHTML=20+count;
+    //         count++;
+    //     }
+    // }
+    
+       
