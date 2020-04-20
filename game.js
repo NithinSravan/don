@@ -18,7 +18,7 @@ var container = document.getElementById("container");
         clearInterval(interval);
         container.removeChild(countBox);
         display();
-        event();
+        //event();
     }
 
     let newArray = shuffle(numArray);
@@ -53,8 +53,9 @@ var number = document.getElementsByClassName("box");
             number[i].addEventListener('click',numberChange(i));
     }
 }
+var block= document.getElementsByClassName("number");
     function numberChange(i){
-        var block= document.getElementsByClassName("number");
+      
         if(parseInt(block[i].innerHTML)===count)
         {
             block[i].innerHTML=20+count;

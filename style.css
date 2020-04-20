@@ -5,14 +5,13 @@
 
 
 .box{
-
     width : 20%;
     height: 25%;
     border: 1px solid green; 
     float : left;
     padding: 5px;
 }
-.container{
+#container{
     height : 300px;
     width :400px;
 
