@@ -8,8 +8,6 @@ var container = document.getElementById("container");
     countDown();
     var interval = setInterval(countDown,1000);
     function countDown(){
-        const countBox=document.createElement('div');
-        container.appendChild(countBox);
         countBox.innerHTML=time+"...";
         time--;
         if (time==0)
@@ -18,10 +16,12 @@ var container = document.getElementById("container");
     
     function stopCountDown(){
         clearInterval(interval);
+        container.removeChild(countBox);
+        display();
     }
 
     let newArray = shuffle(numArray);
-    display();
+ 
     function display(){
         for(var i=0;i<20;i++)
         {
@@ -31,6 +31,7 @@ var container = document.getElementById("container");
         myDiv.classList.add("box");
         const para =document.createElement("p");
         para.innerHTML=newArray[i];
+        para.classList.add("number");
         myDiv.appendChild(para);
         console.log(myDiv);
     
@@ -45,15 +46,16 @@ var container = document.getElementById("container");
      }
      return arr;
 }
-    
-    //     let number= document.getElementsByClassName("box");
-    //     number.addEventListener('click',numberChange);
-    // function numberChange(){
-    //     if(number.value==count)
-    //     {
-    //         number.innerHTML=20+count;
-    //         count++;
-    //     }
-    // }
+var number = document.getElementsByClassName("number");
+    for(var i=0;i<20;i++){
+        number[i].addEventListener('click',numberChange(i));
+    }
+    function numberChange(i){
+        if(parseInt(number[i].innerHTML)===count)
+        {
+            number[i].innerHTML=20+count;
+            count++;
+        }
+    }
     
        
