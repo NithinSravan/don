@@ -1,23 +1,37 @@
 *{
+    font-family: 'Sen';
     margin:0;
     box-sizing: border-box;
+    background-color: #1A1A1D;
+    color: white;
 }
 
+#timer{
+    float: left;
+
+}
+
+.clickText{
+    display: inline-block;
+    vertical-align: middle ;
+}
 
 .box{
     width : 20%;
     height: 25%;
-    border: 1px solid green; 
+    border: 1px solid white; 
     float : left;
     padding: 5px;
+    background-color: #c3073f ;
 }
 #container{
     height : 300px;
     width :400px;
+    background-color: #c3073f;
+    text-align: center;
 
 }
 .text{
     text-align: center;
-
-
 }
+
