@@ -1,19 +1,22 @@
+  
 *{
     font-family: 'Sen';
     margin:0;
     box-sizing: border-box;
-    background-color: #1A1A1D;
     color: white;
 }
-
+body{
+    background-color: black;
+}
 #timer{
     float: left;
-
 }
 
 .clickText{
-    display: inline-block;
-    vertical-align: middle ;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
 }
 
 .box{
@@ -25,13 +28,15 @@
     background-color: #c3073f ;
 }
 #container{
+    position: relative;
     height : 300px;
     width :400px;
     background-color: #c3073f;
     text-align: center;
-
+    margin: 0 auto;
 }
 .text{
-    text-align: center;
-}
 
+    text-align: center;
+
+}
