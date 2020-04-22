@@ -5,27 +5,28 @@ var finish=0;
 var container = document.getElementById("container");
 const countBox=document.createElement('div');
 container.appendChild(countBox);
-container.addEventListener('click',startCountDown);
+
 var count=1;
 var text;
 var interval;
 var number = document.getElementsByClassName("box");
 var block= document.getElementsByClassName("number");
 var res = document.getElementById("reset");
-res.addEventListener('click',function(){
-    setup();
-});
+var startText;
 var stimer= document.getElementsByClassName("stimer");
 var mstimer= document.getElementsByClassName("mstimer");
 
 setup();
+res.addEventListener('click',function(){
+    setup();
+});
     function setup()
     {
-        var startText= document.createElement("p");
-        startText.innerHTML="Click to Start!"
+        startText= document.createElement("p");
+        startText.innerHTML="Click to Start!";
         startText.classList.add("clickText");
         container.appendChild(startText);
-
+        container.addEventListener('click',startCountDown);
     }
 
 //calling counting 3,2,1.... function
