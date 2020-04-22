@@ -3,9 +3,6 @@ let newArray = shuffle(numArray);
 var time = 3;
 var finish=0;
 var container = document.getElementById("container");
-const countBox=document.createElement('div');
-container.appendChild(countBox);
-
 var count=1;
 var text;
 var interval;
@@ -36,7 +33,7 @@ res.addEventListener('click',function(){
 
 //counting 3,2,1... function
     function countDown(){
-        countBox.innerHTML=time+"...";
+        startText.innerHTML=time+"...";
         time--;
         container.removeEventListener('click',startCountDown);
         if (time<0)
@@ -46,7 +43,6 @@ res.addEventListener('click',function(){
     function stopCountDown(){
         clearInterval(interval);
         container.removeChild(startText);
-        container.removeChild(countBox);
         stopWatch();
         display();
         event();
@@ -140,4 +136,3 @@ res.addEventListener('click',function(){
 
     }
     
-       
