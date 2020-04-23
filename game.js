@@ -133,7 +133,7 @@ res.addEventListener('click',function(){
 		else if( finish==1)
 		{
             clearInterval(timer);
-            best.push(stimer,mstimer);
+            best.push(diff);
             bestTimer();
         }
         else if(finish ==2)
@@ -147,12 +147,21 @@ res.addEventListener('click',function(){
 
     }
     let best=new Array();
-    let storage=best.localStorage;
     let k=0;
-
+    let dispBest=document.getElementById("bestTime");
     
     function bestTimer(){
      localStorage.setItem('best',JSON.stringify(best));
-     console.log(localStorage.getiten('best'));
-    
+    best= JSON.parse(localStorage.getItem('best'));
+    best.sort((a, b) => a - b);
+    if(best.length>5)
+        best.pop();
+    localStorage.setItem('best',JSON.stringify(best));
+    displayBest();
+    }
+    function displayBest()
+    {
+        let t=JSON.parse(localStorage.getItem('best'));
+        dispBest.innerHTML=Math.floor(t / 1000) +":"+ (t- Math.floor(diff / 1000) * 1000)+ "ms";
+
     }
