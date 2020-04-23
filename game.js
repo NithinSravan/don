@@ -159,9 +159,14 @@ res.addEventListener('click',function(){
     localStorage.setItem('best',JSON.stringify(best));
     displayBest();
     }
+
     function displayBest()
     {
         let t=JSON.parse(localStorage.getItem('best'));
-        dispBest.innerHTML=Math.floor(t / 1000) +":"+ (t- Math.floor(diff / 1000) * 1000)+ "ms";
-
+        for(var i=0;i<best.length;i++)
+        {
+            let dis =document.createElement("div");
+        dis.innerHTML=Math.floor(t / 1000) +":"+ (t- Math.floor(diff / 1000) * 1000)+ "s";
+        dispBest.appendChild(dis);
+        }
     }
