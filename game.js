@@ -1,14 +1,13 @@
 
 var numArray =[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40];
-let newArray = shuffle(numArray);
+let newArray =[];
 var time = 3;
 var finish=0;
 var container = document.getElementById("container");
 var count=1;
 var text;
 var interval;
-var number = document.getElementsByClassName("box");
-var block= document.getElementsByClassName("number");
+
 var res = document.getElementById("reset");
 var startText;
 var stimer= document.getElementsByClassName("stimer")[0];
@@ -50,6 +49,7 @@ res.addEventListener('click',function(){
     function stopCountDown(){
         clearInterval(interval);
         container.removeChild(startText);
+        newArray=shuffle(numArray);
         stopWatch();
         display();
         event();
@@ -70,6 +70,7 @@ res.addEventListener('click',function(){
     
         }
     }
+
 //shuffle given array till 20
     function shuffle(arr){
      for (var i=20-1;i>0;i--)
@@ -82,6 +83,10 @@ res.addEventListener('click',function(){
 
 //click function
     function event(){
+        var number = document.getElementsByClassName("box");
+        var block= document.getElementsByClassName("number");
+        count=1;
+        finish=0;
         for(let i=0;i<20;i++){
             number[i].addEventListener('click',function(){
                 
@@ -157,16 +162,37 @@ res.addEventListener('click',function(){
     if(best.length>5)
         best.pop();
     localStorage.setItem('best',JSON.stringify(best));
+    if(k==0){
+    let first=document.getElementById("firstBest");
+    first.parentNode.removeChild(first);
+    k++;
+}
     displayBest();
     }
-
+let dis;
+let sec;
+let msec;
     function displayBest()
-    {
+    {   
+
         let t=JSON.parse(localStorage.getItem('best'));
-        for(var i=0;i<best.length;i++)
-        {
-            let dis =document.createElement("div");
-        dis.innerHTML=Math.floor(t / 1000) +":"+ (t- Math.floor(diff / 1000) * 1000)+ "s";
+        dis =document.createElement("div");
+        dis.classList.add("timeBest");
         dispBest.appendChild(dis);
+        let disTime=document.getElementsByClassName('timeBest');
+        for(var i=0;i<best.length;i++)
+        { 
+            sec=Math.floor(t[i]/1000);
+            msec=t[i]-(Math.floor(t[i]/1000)*1000);
+            if (Math.floor(msec / 10) === 0)
+			    {
+				disTime[i].innerHTML = sec+ ':00' + msec;
+			    }
+			    else if (Math.floor(ms / 100) === 0)
+			    {
+				disTime[i].innerHTML = sec+ ':0' + msec;
+			    }
+			    else
+				disTime[i].innerHTML =sec+':'+msec;
         }
     }
