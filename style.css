@@ -10,9 +10,12 @@ body{
     float: left;
     padding: 10px;
     border: 1px solid white; 
-    display: inline;
 }
-
+header:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
 .clickText{
     position: absolute;
     top:50%;
@@ -51,5 +54,4 @@ body{
     float : right;
     padding:10px;
     border: 1px solid white; 
-    display: inline;
 }
