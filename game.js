@@ -204,9 +204,10 @@ let msec;
     }
 
     function refreshBest(){
-
+        best= JSON.parse(localStorage.getItem('best'));
         for(var i=0;i<best.length;i++)
         {
+
             refreshDiv= document.createElement("div");
             refreshDiv.classList.add("timebest");
             dispBest.appendChild(refreshDiv);
