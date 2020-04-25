@@ -14,6 +14,15 @@ var stimer= document.getElementsByClassName("stimer")[0];
 var mstimer= document.getElementsByClassName("mstimer")[0];
 let removeBox= document.getElementsByClassName("box");
 let removeNumber= document.getElementsByClassName("number");
+let best=new Array();
+let k=0;
+let dispBest=document.getElementById("bestTime");
+let dis;
+let sec;
+let msec;
+let s;
+let ms;
+let disTime;
 
 setup();
 res.addEventListener('click',function(){
@@ -157,9 +166,7 @@ res.addEventListener('click',function(){
 	}, 1);
 
     }
-    let best=new Array();
-    let k=0;
-    let dispBest=document.getElementById("bestTime");
+    
     
     function bestTimer(){
      localStorage.setItem('best',JSON.stringify(best));
@@ -175,36 +182,36 @@ res.addEventListener('click',function(){
     }
     displayBest();
     }
-let dis;
-let sec;
-let msec;
+
     function displayBest()
     {   
-
         let t=JSON.parse(localStorage.getItem('best'));
         dis =document.createElement("div");
         dis.classList.add("timeBest");
         dispBest.appendChild(dis);
-        let disTime=document.getElementsByClassName('timeBest');
+        disTime=document.getElementsByClassName('timeBest');
         for(var i=0;i<best.length;i++)
         { 
             sec=Math.floor(t[i]/1000);
             msec=t[i]-(Math.floor(t[i]/1000)*1000);
             if (Math.floor(msec / 10) === 0)
 			    {
-				disTime[i].innerHTML = sec+ ':00' + msec;
+				disTime[i].innerHTML = sec+ ':00' + msec +' S';
 			    }
 			    else if (Math.floor(ms / 100) === 0)
 			    {
-				disTime[i].innerHTML = sec+ ':0' + msec;
+				disTime[i].innerHTML = sec+ ':0' + msec +' S';
 			    }
 			    else
-				disTime[i].innerHTML =sec+':'+msec;
+				disTime[i].innerHTML =sec+ ': '+ msec +' S';
         }
     }
 
     function refreshBest(){
         best= JSON.parse(localStorage.getItem('best'));
+        if(best.length==undefined)
+        document.getElementById('zerobest').innerHTML="0:000 S";
+        else
         for(var i=0;i<best.length;i++)
         {
 
