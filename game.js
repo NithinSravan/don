@@ -7,14 +7,14 @@ var container = document.getElementById("container");
 var count=1;
 var text;
 var interval;
-
+var diff;
 var res = document.getElementById("reset");
 var startText;
 var stimer= document.getElementsByClassName("stimer")[0];
 var mstimer= document.getElementsByClassName("mstimer")[0];
 let removeBox= document.getElementsByClassName("box");
 let removeNumber= document.getElementsByClassName("number");
-let best=new Array();
+var best=new Array();
 let k=0;
 let dispBest=document.getElementById("bestTime");
 let dis;
@@ -148,7 +148,6 @@ res.addEventListener('click',function(){
 		else if( finish==1)
 		{
             clearInterval(timer);
-            best.push(diff);
             bestTimer();
             res.innerHTML="";
             let newBox= document.createElement('p');
@@ -169,17 +168,15 @@ res.addEventListener('click',function(){
     
     
     function bestTimer(){
-     localStorage.setItem('best',JSON.stringify(best));
+  
+    best.push(diff);
+    localStorage.setItem('best',JSON.stringify(best));
     best= JSON.parse(localStorage.getItem('best'));
     best.sort((a, b) => a - b);
     if(best.length>5)
         best.pop();
     localStorage.setItem('best',JSON.stringify(best));
-    if(k==0){
-    let first=document.getElementById("firstBest");
-    first.parentNode.removeChild(first);
-    k++;
-    }
+    
     displayBest();
     }
 
@@ -209,16 +206,19 @@ res.addEventListener('click',function(){
 
     function refreshBest(){
         best= JSON.parse(localStorage.getItem('best'));
-        if(best.length==undefined)
+        if(localStorage.getItem('best')===null)
         document.getElementById('zerobest').innerHTML="0:000 S";
         else
-        for(var i=0;i<best.length;i++)
         {
-
-            refreshDiv= document.createElement("div");
-            refreshDiv.classList.add("timebest");
-            dispBest.appendChild(refreshDiv);
-            displayBest();
+            for(var i=0;i<best.length;i++)
+            {
+    
+                refreshDiv= document.createElement("div");
+                refreshDiv.classList.add("timebest");
+                dispBest.appendChild(refreshDiv);
+                displayBest();
+            }
         }
+     
        
     }
