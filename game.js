@@ -30,6 +30,7 @@ res.addEventListener('click',function(){
         startText.classList.add("clickText");
         container.appendChild(startText);
         container.addEventListener('click',startCountDown);
+        refreshBest();
     }
 
 //calling counting 3,2,1.... function
@@ -126,20 +127,25 @@ res.addEventListener('click',function(){
 			stimer.innerHTML = s;
 			    if (Math.floor(ms / 10) === 0)
 			    {
-				mstimer.innerHTML = '00' + ms;
+				mstimer.innerHTML = '00' + ms +' S';
 			    }
 			    else if (Math.floor(ms / 100) === 0)
 			    {
-				mstimer.innerHTML = '0' + ms;
+				mstimer.innerHTML = '0' + ms +' S';
 			    }
 			    else
-				mstimer.innerHTML = ms;
+				mstimer.innerHTML = ms+' S';
 		}
 		else if( finish==1)
 		{
             clearInterval(timer);
             best.push(diff);
             bestTimer();
+            res.innerHTML="";
+            let newBox= document.createElement('p');
+            newBox.classList.add('newGame')
+            res.appendChild(newBox);
+            newBox.innerHTML="New Game";
         }
         else if(finish ==2)
         { 
@@ -166,7 +172,7 @@ res.addEventListener('click',function(){
     let first=document.getElementById("firstBest");
     first.parentNode.removeChild(first);
     k++;
-}
+    }
     displayBest();
     }
 let dis;
@@ -195,4 +201,16 @@ let msec;
 			    else
 				disTime[i].innerHTML =sec+':'+msec;
         }
+    }
+
+    function refreshBest(){
+
+        for(var i=0;i<best.length;i++)
+        {
+            refreshDiv= document.createElement("div");
+            refreshDiv.classList.add("timebest");
+            dispBest.appendChild(refreshDiv);
+            displayBest();
+        }
+       
     }

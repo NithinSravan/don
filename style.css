@@ -1,3 +1,4 @@
+
 *{
     font-family: 'Cinzel', serif;
     box-sizing: border-box;
@@ -54,4 +55,11 @@ header:after {
     float : right;
     padding:10px;
     border: 1px solid white; 
+}
+.newGame{
+    display:inline;
+    border: 1px solid white;
+    padding: 10px;
+    margin: 10px;
+    
 }
