@@ -32,29 +32,29 @@ function PlayerCircle (x,y,r,c) {
         }
     }
 
-    this.burst = function() {
-        for(var i =0 ;i<obstacle.length;i++)
-       {    
-           if(this.y - this.radius <= obstacle[i].y + obstacle[i].r + 10 && this.y + this.radius >= obstacle[i].y + obstacle[i].r + 10)
-          { 
-              var pixel = ctx.getImageData(obstacle[i].x,obstacle[i].y+ obstacle[i].r,2,2).data;
-           console.log(pixel);
-           clearInterval(render);
-          }
-          else
-          {
-              console.log("hit");
-              clearInterval(render);
-          }
+    // this.burst = function() {
+    //     for(var i =0 ;i<obstacle.length;i++)
+    //    {    
+    //        if(this.y - this.radius <= obstacle[i].y + obstacle[i].r + 5 && this.y - this.radius >= obstacle[i].y - obstacle[i].r - 5)
+    //       { 
+    //           var pixel = ctx.getImageData(obstacle[i].x,obstacle[i].y+ obstacle[i].r,2,2).data;
+    //        console.log(pixel);
+    //        clearInterval(render);
+    //       }
+    //       else
+    //       {
+    //           console.log("hit");
+    //           clearInterval(render);
+    //       }
 
-                // if(!(pixel[0]==255&&pixel[1]==0&&pixel[2]==0))
-                //     continue;
-                // else{
-                //     ctx.clearRect(0,0,canvas.width,canvas.height);
-                //     clearInterval(render);
-                // }
-       }
-    }
+    //             // if(!(pixel[0]==255&&pixel[1]==0&&pixel[2]==0))
+    //             //     continue;
+    //             // else{
+    //             //     ctx.clearRect(0,0,canvas.width,canvas.height);
+    //             //     clearInterval(render);
+    //             // }
+    //    }
+    // }
 
 }
 function Obstacle(x,y,r,c1,c2) {
@@ -81,6 +81,17 @@ function Obstacle(x,y,r,c1,c2) {
         this.startAngle += 1*Math.PI/180;
         this.draw();
     }
+    
+    this.burst = function () {
+       
+        if(this.y + this.r + 5 >= player.y - player.r && this.y - this.r -5 <= player.y -player.r)
+            console.log("pass");
+        else 
+        {console.log("hit");
+        clearInterval(render);
+    }
+    
+    }
 
 }
 
@@ -101,10 +112,10 @@ function play () {
          render = setInterval(function(){
             ctx.clearRect(0,0,canvas.width,canvas.height);
         player.jump();
-        player.burst();
         for(var i=0;i<obstacle.length;i++)
-            obstacle[i].rotate();
-        
+        {    obstacle[i].rotate();
+                obstacle[i].burst();
+        }
     },16);
 
     canvas.removeEventListener('click',play);
