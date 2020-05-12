@@ -84,7 +84,7 @@ function Obstacle(x,y,r,c1,c2) {
     
     this.burst = function () {
        
-        if(this.y + this.r + 5 >= player.y - player.r && this.y - this.r -5 <= player.y -player.r)
+        if(player.y-this.y <= (player.r + this.r + 5) && (player.y-this.y >= (this.r - player.r - 5)))
             console.log("pass");
         else 
         {console.log("hit");
