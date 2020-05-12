@@ -1,6 +1,6 @@
 var canvas = document.getElementById("canvas");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+// canvas.width = window.innerWidth;
+// canvas.height = window.innerHeight;
 var ctx= canvas.getContext("2d");
 var render;
 var obstacle = []; 
@@ -9,6 +9,14 @@ window.addEventListener('resize', function(){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 });
+window.onload = function(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    player.draw();
+
+for(var i=0;i<obstacle.length;i++)
+    obstacle[i].draw();
+};
 
 function PlayerCircle (x,y,r,c) {
     this.x = x;
@@ -16,7 +24,7 @@ function PlayerCircle (x,y,r,c) {
     this.r = r;
     this.c = c;
 
-    this.dy = 5;
+    this.dy;
     this.g = 0.25;
     this.draw = function() {
         ctx.beginPath();
@@ -89,7 +97,8 @@ function Obstacle(x,y,r,c1,c2) {
     
     this.burst = function () {
 
-        console.log(player.r + this.r);
+        console.log(player.r + this.r + canvas.height/80);
+        console.log(player.y - this.y)
        
         if(((player.y-this.y) <= (player.r + this.r + canvas.height/80)) && ((player.y-this.y) >= (this.r - player.r - canvas.height/80)))
             console.log("pass");
@@ -103,17 +112,14 @@ function Obstacle(x,y,r,c1,c2) {
 
 }
 
-var player = new PlayerCircle(canvas.width/2,canvas.height -20,canvas.height*0.02,'red');
-obstacle.push(new Obstacle(canvas.width/2,canvas.height/2 + 80,canvas.height*0.15,'red','blue'));
-obstacle.push(new Obstacle(canvas.width/2,canvas.height/2 - 100,canvas.height*0.15,'red','blue'));
-player.draw();
+var player = new PlayerCircle(canvas.width/2,canvas.height/2+ canvas.height*0.3,canvas.height*0.02,'red');
+obstacle.push(new Obstacle(canvas.width/2,canvas.height/5,canvas.height*0.15,'red','blue'));
+// obstacle.push(new Obstacle(canvas.width/2,canvas.height/2 - 100,canvas.height*0.15,'red','blue'));
 
-for(var i=0;i<obstacle.length;i++)
-    obstacle[i].draw();
 
 canvas.addEventListener('click', play );
 canvas.addEventListener('click', function (){
-    player.dy = 5;
+    player.dy = Math.min(canvas.height*0.01,5);
 });
 
 function play () {
