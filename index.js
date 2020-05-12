@@ -5,6 +5,11 @@ var ctx= canvas.getContext("2d");
 var render;
 var obstacle = []; 
 
+window.addEventListener('resize', function(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
 function PlayerCircle (x,y,r,c) {
     this.x = x;
     this.y = y;
@@ -25,11 +30,11 @@ function PlayerCircle (x,y,r,c) {
         this.dy -= this.g;
         this.draw();
 
-        if(this.y<=canvas.height/2)
-        for(var i=0;i<obstacle.length;i++)
-        {    obstacle[i].y+=0.5;
-            obstacle[i].draw();
-        }
+        // if(this.y<=canvas.height/2)
+        // for(var i=0;i<obstacle.length;i++)
+        // {    obstacle[i].y+=0.5;
+        //     obstacle[i].draw();
+        // }
     }
 
     // this.burst = function() {
@@ -66,7 +71,7 @@ function Obstacle(x,y,r,c1,c2) {
     this.startAngle=Math.PI/2;
 
     this.draw = function () {
-        ctx.linewidth=10;
+        ctx.linewidth=canvas.height/40;
         ctx.beginPath();
         ctx.strokeStyle = c1 ;
         ctx.arc(this.x,this.y,this.r,this.startAngle,Math.PI+this.startAngle,false);
@@ -83,21 +88,24 @@ function Obstacle(x,y,r,c1,c2) {
     }
     
     this.burst = function () {
+
+        console.log(player.r + this.r);
        
-        if(player.y-this.y <= (player.r + this.r + 5) && (player.y-this.y >= (this.r - player.r - 5)))
+        if(((player.y-this.y) <= (player.r + this.r + canvas.height/80)) && ((player.y-this.y) >= (this.r - player.r - canvas.height/80)))
             console.log("pass");
         else 
-        {console.log("hit");
-        clearInterval(render);
-    }
+        {
+            console.log("hit");
+            clearInterval(render);
+        }
     
     }
 
 }
 
-var player = new PlayerCircle(canvas.width/2,canvas.height -20,5,'red');
-obstacle.push(new Obstacle(canvas.width/2,canvas.height/2 + 80,50,'red','blue'));
-obstacle.push(new Obstacle(canvas.width/2,canvas.height/2 - 100,50,'red','blue'));
+var player = new PlayerCircle(canvas.width/2,canvas.height -20,canvas.height*0.02,'red');
+obstacle.push(new Obstacle(canvas.width/2,canvas.height/2 + 80,canvas.height*0.15,'red','blue'));
+obstacle.push(new Obstacle(canvas.width/2,canvas.height/2 - 100,canvas.height*0.15,'red','blue'));
 player.draw();
 
 for(var i=0;i<obstacle.length;i++)
@@ -112,7 +120,7 @@ function play () {
          render = setInterval(function(){
             ctx.clearRect(0,0,canvas.width,canvas.height);
         player.jump();
-        for(var i=0;i<obstacle.length;i++)
+        for(let i=0;i<obstacle.length;i++)
         {    obstacle[i].rotate();
                 obstacle[i].burst();
         }
@@ -120,5 +128,3 @@ function play () {
 
     canvas.removeEventListener('click',play);
 }
-
-
