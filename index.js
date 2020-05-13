@@ -1,12 +1,12 @@
 let canvas = document.getElementById("canvas");
 let ctx= canvas.getContext("2d");
 let render;
-let obstacle = []; 
+let obstacle; 
 let player;
 let pixel;
 let maxScore=0;
 let count=0;
-let newObstacley = 350;
+let newObstacley ;
 let best = JSON.parse(localStorage.getItem('bestscore'));
 
 var score = document.createElement("div");
@@ -41,7 +41,7 @@ window.onopen = function () {
 window.onresize = function () {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    setup ();
+    setup();
 }
 
 window.onload = function () {
@@ -66,8 +66,11 @@ function dispBestScore(max){
 }
 
 function  setup (){
+    obstacle=new Array();
     player = new PlayerCircle(canvas.width/2,canvas.height/2+ canvas.height*0.3,canvas.height*0.02,'rgb(255,255,255)');
     obstacle.push(new Obstacle(canvas.width/2,canvas.height/3,canvas.height*0.15,'rgb(255,255,255)','#00A4CCFF'));
+    maxScore = 0;
+    count = 0;
     player.draw();
 
 for(let i=0;i<obstacle.length;i++)
