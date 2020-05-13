@@ -1,3 +1,12 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #F95700FF;
+}
 canvas {
     position: absolute;
     top: 0;
@@ -8,11 +17,18 @@ canvas {
     display: block;
 }
 
-*{
-    box-sizing: border-box;
+#score {
+    float: left;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid black; 
+    background-color: cornsilk;
 }
 
-body{
-    margin: 0;
-    padding: 0;
+#highscore {
+    float: right;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid black;
+    background-color: cornsilk;
 }
