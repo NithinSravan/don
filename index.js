@@ -102,14 +102,23 @@ function PlayerCircle (x,y,r,c) {
         }
 
         for(let i=0;i<obstacle.length;i++)
-        if(this.y <= obstacle[i].y&&(maxScore<count||count==0))
         {
-            count=i+1;
-            maxScore=count;
-            dispScore(maxScore);
-            obstacle.push(new Obstacle(canvas.width/2,canvas.height/3 - newObstacley,canvas.height*0.15,'rgb(255,255,255)','#00A4CCFF'));
-            newObstacley -= 250;
+            if(this.y <= obstacle[i].y && this.y >= obstacle[i].y - obstacle[i].r)
+            {
+                if(maxScore<(i+1))
+                {
+                    console.log(1)
+                    count=i+1;
+                    maxScore=count;
+                    dispScore(maxScore);
+                    newObstacley = 3*canvas.height/5;
+                    obstacle.push(new Obstacle(canvas.width/2,obstacle[i].y - newObstacley,canvas.height*0.15,'rgb(255,255,255)','#00A4CCFF'));
+                   
+                }
+            }
+       
         }
+       
 
     }
 
@@ -123,14 +132,15 @@ function Obstacle(x,y,r,c1,c2) {
     this.startAngle=Math.PI/2;
 
     this.draw = function () {
-        ctx.linewidth=canvas.height/20;
         ctx.beginPath();
         ctx.strokeStyle = c1 ;
         ctx.arc(this.x,this.y,this.r,this.startAngle,Math.PI+this.startAngle,false);
+        ctx.lineWidth=canvas.height/40;
         ctx.stroke();
         ctx.beginPath();
         ctx.strokeStyle = c2 ;
         ctx.arc(this.x,this.y,this.r,this.startAngle,Math.PI+this.startAngle,true);
+        ctx.lineWidth=canvas.height/40;
         ctx.stroke();
     }
 
