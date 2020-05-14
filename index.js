@@ -7,7 +7,21 @@ let pixel;
 let maxScore=0;
 let count=0;
 let newObstacley ;
+let gamePaused = false;
 let best = JSON.parse(localStorage.getItem('bestscore'));
+let jumpSound = new Audio();
+let burstSound = new Audio();
+jumpSound.src = "jump.wav";
+burstSound.src = "burst.flac";
+
+
+let pauseImage = document.createElement("img");
+// pauseImage.src = "pause.png";
+let pauseButton = document.getElementById("pause");
+pauseButton.appendChild(pauseImage);
+pauseButton.addEventListener('click',pauseGame);
+
+canvas.addEventListener('click',jumpAudio);
 
 var score = document.createElement("div");
 score.setAttribute("id","score");
@@ -24,7 +38,7 @@ document.getElementsByTagName("body")[0].appendChild(highScore);
         } 
     else
     {    localStorage.setItem('bestscore',JSON.stringify(best));
-        highScore.innerHTML = "Best Score :" + best;
+        highScore.innerHTML = "Best Score : " + best;
     }
 
 canvas.addEventListener('click', play );
@@ -51,8 +65,7 @@ window.onload = function () {
 }
 
 function dispScore(max){
-    score.innerHTML ="Score :" + max;
-    console.log(score);
+    score.innerHTML ="Score : " + max;
     dispBestScore(max);
 }
 
@@ -61,7 +74,36 @@ function dispBestScore(max){
     if(max>best)
     {
     localStorage.setItem('bestscore',JSON.stringify(max));
-    highScore.innerHTML ="Best Score :" + max;
+    highScore.innerHTML ="Best Score : " + max;
+    }
+}
+
+function jumpAudio(){
+        jumpSound.play();
+}
+
+function burstAudio() {
+        burstSound.play();
+}
+
+function pauseGame(){
+    console.log(1);
+    if(!gamePaused)
+     {   gamePaused = true;
+        clearInterval(render);
+        pauseImage.src = "resume.png";
+     }
+     else if(gamePaused){
+        gamePaused = false;
+        pauseImage.src = "pause.png";
+        render = setInterval(function(){
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            player.jump();
+        for(let i=0;i<obstacle.length;i++)
+        {    obstacle[i].rotate();
+                obstacle[i].burst();
+        }
+    },16);
     }
 }
 
@@ -71,6 +113,7 @@ function  setup (){
     obstacle.push(new Obstacle(canvas.width/2,canvas.height/3,canvas.height*0.15,'rgb(255,255,255)','#00A4CCFF'));
     maxScore = 0;
     count = 0;
+    gamePaused = false;
     player.draw();
 
 for(let i=0;i<obstacle.length;i++)
@@ -98,19 +141,29 @@ function PlayerCircle (x,y,r,c) {
         this.dy -= this.g;
         this.draw();
 
-        if(this.y<=canvas.height/2)
-        for(let i=0;i<obstacle.length;i++)
-        {    obstacle[i].y += 0.6;
-            obstacle[i].draw();
-        }
 
+        if(this.y<=canvas.height/2)
+        {
+            if(this.y <= canvas.height/3)
+            for(let i=0;i<obstacle.length;i++)
+            { 
+               obstacle[i].y += 1.5;
+                obstacle[i].draw();
+            }
+            else
+            for(let i=0;i<obstacle.length;i++)
+            { 
+               obstacle[i].y += 0.7;
+                obstacle[i].draw();
+            }
+           
+        }
         for(let i=0;i<obstacle.length;i++)
         {
             if(this.y <= obstacle[i].y && this.y >= obstacle[i].y - obstacle[i].r)
             {
                 if(maxScore<(i+1))
                 {
-                    console.log(1)
                     count=i+1;
                     maxScore=count;
                     dispScore(maxScore);
@@ -160,6 +213,8 @@ function Obstacle(x,y,r,c1,c2) {
             if(!(pixel[0]==255&&pixel[1]==255&&pixel[2]==255))
               {  ctx.clearRect(0,0,canvas.width,canvas.height);
                 clearInterval(render);
+                    burstAudio();
+                canvas.removeEventListener('click',jumpAudio);
                 for(var j=0;j<obstacle.length;j++)
                 {
                     obstacle[j].draw();
@@ -173,7 +228,9 @@ function Obstacle(x,y,r,c1,c2) {
             pixel = ctx.getImageData(this.x,this.y - this.r,1,1).data;
             if(!(pixel[0]==255&&pixel[1]==255&&pixel[2]==255))
               {  ctx.clearRect(0,0,canvas.width,canvas.height);
-                clearInterval(render);
+                clearInterval(render);                
+                burstAudio();
+                canvas.removeEventListener('click',jumpAudio);
                 for(var j=0;j<obstacle.length;j++)
                 {
                     obstacle[j].draw();
@@ -183,8 +240,6 @@ function Obstacle(x,y,r,c1,c2) {
     }
 
 }
-
-    // 
 
 function play () {
     canvas.removeEventListener('click',play);

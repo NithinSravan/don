@@ -17,6 +17,13 @@ canvas {
     display: block;
 }
 
+#pause {
+    float : right;
+    padding: 5px;
+    margin : 7px;
+    background-color: green;
+}
+
 #score {
     float: left;
     padding: 10px;
