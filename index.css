@@ -1,20 +1,36 @@
 *{
     box-sizing: border-box;
 }
-
-body{
-    margin: 0;
-    padding: 0;
-    background-color: #F95700FF;
+body {
+    margin : 0;
+    padding : 0;
 }
 canvas {
+    background-color: rgb(25, 14, 65);
     position: absolute;
     top: 0;
     left: 0;
+}
+#countdown{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: transparent;
+    color: #D9B48FFF;
+}
+#play {
+    border: 1 px solid black;
+    margin: 10px;
+    padding: 10px;
+    background-color: ivory;
+}
+#pausescreen{
+    position: absolute;
     width: 100vw;
     height: 100vh;
-    margin: 0 auto;
-    display: block;
+    display : none;
+    z-index: 2;
+    background: rgba(255,255,255,0.6);
 }
 
 #pause {
@@ -23,48 +39,37 @@ canvas {
     right : 10px;
     z-index: 1;
     padding: 5px;
-    margin : 6px;
+    margin : 7px;
 }
 
 #score {
     position: absolute;
-    top: 10px;
-    left : 10px;
+    top : 10px;
+    left : 15px;
     padding: 10px;
     margin: 10px;
-    border: 1px solid black; 
-    background-color: cornsilk;
+    border: 1px solid black;
+    background-color: #D9B48FFF;
 }
 
 #highscore {
     position: absolute;
     top : 10px;
-    right : 65px;
+    right : 60px;
     padding: 10px;
     margin: 10px;
     border: 1px solid black;
-    background-color: cornsilk;
+    background-color: #D9B48FFF;
 }
 
-#pausescreen{
+#gameover{
     position: absolute;
     width: 100vw;
     height: 100vh;
-    display : none;
-    z-index: 2;
-    background: rgba(0,0,0,0.6);
-}
-
-#resume{
-    position: absolute;
-    top : 40%;
-    left : 50%;
-    transform: translateX(-50%);
-}
-
-#reload{
-    position : absolute;
-    top : 60%;
-    left : 50%; 
-    transform: translateX(-50%);
+    line-height: 100vh;
+    text-align: center;
+    display: none;
+    background: rgba(255,255,255,0.6);
+    font-size: 40px;
+    z-index: 3;
 }
