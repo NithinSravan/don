@@ -135,33 +135,36 @@ function distance(x1,y1,x2,y2) {
     return Math.sqrt(Math.pow(xDistance,2) + Math.pow(yDistance,2));
 
 }
+function countTimer(){
+    if(ballArea >= 0.1*canvasArea)
+    {
+        timer -= 1;
+        countDown.innerText = timer;
+        if(timer <= 0)
+         {   
+            console.log(stopTimer);
+
+            clearInterval(stopTimer);
+            clearInterval(render);
+            clearTimeout(stop);
+
+         }
+    }
+    else 
+    {
+        countDown.innerHTML = "";
+        timer = 10;
+        clearInterval(stopTimer);
+    }
+}
 
 function areaCheck(){
     ballArea = 0;
     canvasArea = canvas.height*canvas.width;
     for(let i=0;i<balls.length;i++)
-    ballArea += Math.PI*balls[i].r*balls[i].r;
+        ballArea += Math.PI*balls[i].r*balls[i].r;
 
-    stopTimer = setInterval(function(){
-        if(ballArea >= 0.1*canvasArea)
-        {
-            timer--;
-            countDown.innerText = timer;
-            if(timer <= 0)
-             {   
-                console.log(timer);
-                clearInterval(render);
-                clearTimeout(stop);
-                clearInterval(stopTimer);
-             }
-        }
-        else 
-        {
-            countDown.innerHTML = "";
-            timer = 10;
-            clearInterval(stopTimer);
-        }
-    },1000);
+    stopTimer = setInterval(countTimer,1000);
 }
 
 function dispScore(max){
