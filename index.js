@@ -90,13 +90,14 @@ function rotate( xvelocity, yvelocity, angle) {
 }
 
 function resolveCollision(ball1, ball2) {
+
     const dxDiff = ball1.dx - ball2.dx;
     const dyDiff = ball1.dy - ball2.dy;
 
     const xDiff = ball2.x - ball1.x;
     const yDiff = ball2.y - ball1.y;
 
-    if (dxDiff * xDiff + dyDiff * dyDiff >= 0) {
+    if (dxDiff * xDiff + dyDiff * yDiff >= 0) {
 
         const angle = -Math.atan2(ball2.y - ball1.y, ball2.x - ball1.x);
 
@@ -118,48 +119,12 @@ function resolveCollision(ball1, ball2) {
         const velocity1 = rotate( v1.x, v1.y, -angle);
         const velocity2 = rotate( v2.x, v2.y, -angle);
 
-        if(velocity1.x > 1 ||velocity1.y > 1)
-        {
-            velocity1.x -= 0.5;
-            
-            velocity1.y -= 0.5;
-        }
-        if(velocity1.x < -1 ||velocity1.y < -1)
-        {
-            velocity1.x += 0.5;
-            
-            velocity1.y += 0.5;
-        }
-        if(velocity2.x > 1 ||velocity2.y > 1)
-        {
-            velocity2.x -= 0.5;
-            
-            velocity2.y -= 0.5;
-        }
-        if(velocity2.x < -1 ||velocity2.y < -1)
-        {
-            velocity2.x += 0.5;
-            
-            velocity2.y += 0.5;
-        }
-
-        if ((ball1.x > canvas.width - ball1.r) || (ball1.x < ball1.r))
-        ball1.dx = -ball1.dx;
-
-        if ((ball1.y > canvas.height - ball1.r ) || (ball1.y < ball1.r))
-        ball1.dy = -ball1.dy;
-        
-        if ((ball2.x > canvas.width - ball2.r) || (ball2.x < ball2.r))
-        ball2.dx = -ball2.dx;
-
-        if ((ball2.y > canvas.height - ball2.r ) || (ball2.y < ball2.r))
-        ball2.dy = -ball2.dy;
-
         ball1.dx = velocity1.x;
-        ball2.dy = velocity1.y;
+        ball1.dy = velocity1.y;
 
         ball2.dx = velocity2.x;
         ball2.dy = velocity2.y;
+
     }
 }
 
@@ -172,6 +137,7 @@ function distance(x1,y1,x2,y2) {
 }
 
 function areaCheck(){
+    ballArea = 0;
     canvasArea = canvas.height*canvas.width;
     for(let i=0;i<balls.length;i++)
     ballArea += Math.PI*balls[i].r*balls[i].r;
@@ -181,9 +147,13 @@ function areaCheck(){
         {
             timer--;
             countDown.innerText = timer;
-            if(timer<=0)
+            if(timer <= 0)
+             {   
+                console.log(timer);
                 clearInterval(render);
                 clearTimeout(stop);
+                clearInterval(stopTimer);
+             }
         }
         else 
         {
@@ -242,6 +212,7 @@ function pauseGame() {
     pauseButton.removeEventListener('click',pauseGame);
     clearInterval(render);
     clearTimeout(stop);
+    clearInterval(stopTimer);
     pauseScreen.appendChild(resumeImage);
     pauseScreen.appendChild(reloadImage);
     pauseScreen.style.display = "block";
@@ -253,12 +224,7 @@ function pauseGame() {
 
 function genBubbles() {
 
-    // if(time < 1000)
-    //     time = 1000;
-    // else
-    //     time -= index*10;
-
-    let r = Math.floor(Math.random()*10) + 10;
+    let r = Math.floor(Math.random()*canvas.width/20) +10;
     let x = Math.random()*(canvas.width - r*2) +r;
     let y = Math.random()*(canvas.height - r*2) +r;
     let c = 'white';
@@ -275,7 +241,6 @@ function genBubbles() {
     }
 
     balls.push(new Circle(x,y,r,c));
-    ballArea += Math.PI*r*r;
     index += 1;
 
         stop = setTimeout(genBubbles,time);
@@ -285,11 +250,12 @@ function genBubbles() {
 function setup(){
     clearInterval(render);
     clearTimeout(stop);
+    clearInterval(stopTimer);
 
     for(let i=0;i<20;i++)
     {
 
-    let r = Math.floor(Math.random()*10) + 10;
+    let r = Math.floor(Math.random()*canvas.width/20) + 10;
     let x = Math.random()*(canvas.width - r*2) +r;
     let y = Math.random()*(canvas.height - r*2) +r;
     let c = 'white';
@@ -367,7 +333,6 @@ function Circle(x,y,r,c){
                     burstAudio();
                     count ++;
                     dispScore(count);
-                    ballArea -= Math.PI*this.r*this.r;
                 }
         }
 
@@ -382,9 +347,8 @@ function update(){
     
    render = setInterval( function(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
+    areaCheck();
     for (var i=0;i<balls.length;i++)
         balls[i].animate();
    },16);
-
-   areaCheck();
 }
