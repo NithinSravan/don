@@ -1,6 +1,25 @@
 var canvas = document.getElementById("canvas");
 
 var ctx = canvas.getContext("2d");
+
+window.onopen = function () {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    setup();
+}
+
+window.onresize = function () {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    setup();
+}
+
+window.onload = function () {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    setup();
+}
+
 let render; 
 let stop;
 let stopTimer;
@@ -9,6 +28,7 @@ let time = 1500;
 let index = 0;
 let balls = [];
 
+let countDown = document.getElementById("countdown");
 let canvasArea;
 let ballArea = 0;
 
@@ -59,24 +79,6 @@ document.getElementsByTagName("body")[0].appendChild(highScore);
         highScore.innerHTML = "Best Score : " + best;
     }
 
-window.onopen = function () {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    setup();
-}
-
-window.onresize = function () {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    setup();
-}
-
-window.onload = function () {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    setup();
-}
-
 
 function rotate( xvelocity, yvelocity, angle) {
     
@@ -84,7 +86,6 @@ function rotate( xvelocity, yvelocity, angle) {
         x: xvelocity * Math.cos(angle) - yvelocity * Math.sin(angle),
         y: xvelocity * Math.sin(angle) + yvelocity * Math.cos(angle)
     };
-
     return rotatedVelocity;
 }
 
@@ -102,7 +103,7 @@ function resolveCollision(ball1, ball2) {
         const m1 = ball1.mass;
         const m2 = ball2.mass;
 
-        const u1 = rotate(ball1.dx,balls.dy, angle);
+        const u1 = rotate(ball1.dx,ball1.dy, angle);
         const u2 = rotate(ball2.dx,ball2.dy, angle);
 
         const v1 = {
@@ -116,6 +117,43 @@ function resolveCollision(ball1, ball2) {
 
         const velocity1 = rotate( v1.x, v1.y, -angle);
         const velocity2 = rotate( v2.x, v2.y, -angle);
+
+        if(velocity1.x > 1 ||velocity1.y > 1)
+        {
+            velocity1.x -= 0.5;
+            
+            velocity1.y -= 0.5;
+        }
+        if(velocity1.x < -1 ||velocity1.y < -1)
+        {
+            velocity1.x += 0.5;
+            
+            velocity1.y += 0.5;
+        }
+        if(velocity2.x > 1 ||velocity2.y > 1)
+        {
+            velocity2.x -= 0.5;
+            
+            velocity2.y -= 0.5;
+        }
+        if(velocity2.x < -1 ||velocity2.y < -1)
+        {
+            velocity2.x += 0.5;
+            
+            velocity2.y += 0.5;
+        }
+
+        if ((ball1.x > canvas.width - ball1.r) || (ball1.x < ball1.r))
+        ball1.dx = -ball1.dx;
+
+        if ((ball1.y > canvas.height - ball1.r ) || (ball1.y < ball1.r))
+        ball1.dy = -ball1.dy;
+        
+        if ((ball2.x > canvas.width - ball2.r) || (ball2.x < ball2.r))
+        ball2.dx = -ball2.dx;
+
+        if ((ball2.y > canvas.height - ball2.r ) || (ball2.y < ball2.r))
+        ball2.dy = -ball2.dy;
 
         ball1.dx = velocity1.x;
         ball2.dy = velocity1.y;
@@ -135,22 +173,23 @@ function distance(x1,y1,x2,y2) {
 
 function areaCheck(){
     canvasArea = canvas.height*canvas.width;
-    for(var i=0;i<balls.length;i++)
+    for(let i=0;i<balls.length;i++)
     ballArea += Math.PI*balls[i].r*balls[i].r;
 
     stopTimer = setInterval(function(){
-        if(ballArea >= 0.45*canvasArea)
+        if(ballArea >= 0.1*canvasArea)
         {
             timer--;
-            document.getElementById("countdown").innerText = timer;
+            countDown.innerText = timer;
+            if(timer<=0)
+                clearInterval(render);
+                clearTimeout(stop);
         }
         else 
         {
-            document.getElementById("countdown").innerHTML = "";
+            countDown.innerHTML = "";
             timer = 10;
             clearInterval(stopTimer);
-            if(timer<=0)
-                clearInterval(render);
         }
     },1000);
 }
@@ -202,7 +241,7 @@ function pauseGame() {
 
     pauseButton.removeEventListener('click',pauseGame);
     clearInterval(render);
-
+    clearTimeout(stop);
     pauseScreen.appendChild(resumeImage);
     pauseScreen.appendChild(reloadImage);
     pauseScreen.style.display = "block";
@@ -214,54 +253,58 @@ function pauseGame() {
 
 function genBubbles() {
 
-    if(time < 400)
-        time = 350;
-    else
-        time -= index*10;
+    // if(time < 1000)
+    //     time = 1000;
+    // else
+    //     time -= index*10;
 
-    let r = Math.floor(Math.random()*10) + 3;
+    let r = Math.floor(Math.random()*10) + 10;
     let x = Math.random()*(canvas.width - r*2) +r;
     let y = Math.random()*(canvas.height - r*2) +r;
     let c = 'white';
 
-    for(var j=0;j<balls.length;j++)
+    for(let j=0;j<balls.length;j++)
     {
         if(distance(x,y,balls[j].x,balls[j].y) < r + balls[j].r)
         {
             x = Math.random()*(canvas.width - r*2) +r;
             y = Math.random()*(canvas.height - r*2) +r;
+            j = -1;
         }
-        j = -1;
+        
     }
 
     balls.push(new Circle(x,y,r,c));
+    ballArea += Math.PI*r*r;
     index += 1;
 
-        // stop = setTimeout(genBubbles,time);
+        stop = setTimeout(genBubbles,time);
         
 }
 
 function setup(){
-    
+    clearInterval(render);
+    clearTimeout(stop);
 
-    for(var i=0;i<20;i++)
+    for(let i=0;i<20;i++)
     {
 
-    let r = Math.floor(Math.random()*10) + 3;
+    let r = Math.floor(Math.random()*10) + 10;
     let x = Math.random()*(canvas.width - r*2) +r;
     let y = Math.random()*(canvas.height - r*2) +r;
     let c = 'white';
     
     if(i!==0)
     {
-        for(var j=0;j<balls.length;j++)
+        for(let j=0;j<balls.length;j++)
         {
             if(distance(x,y,balls[j].x,balls[j].y) < r + balls[j].r)
             {
                 x = Math.random()*(canvas.width - r*2) +r;
                 y = Math.random()*(canvas.height - r*2) +r;
+                j = -1;
             }
-            j = -1;
+            
         }
     }
 
@@ -270,7 +313,7 @@ function setup(){
     }
 
     count = 0;
-    // genBubbles();
+    genBubbles();
     update();
 
 }
@@ -280,7 +323,7 @@ function Circle(x,y,r,c){
     this.y = y;
     this.r = r;
     this.c = c;
-    this.mass = r*r;
+    this.mass = 1;
 
     this.dx = ((Math.random()*1)+0.1)*((Math.random()*1)-0.5)*2;
     this.dy = ((Math.random()*1)+0.1)*((Math.random()*1)-0.5)*2; 
@@ -307,9 +350,9 @@ function Circle(x,y,r,c){
         {
             if(this === balls[i])
                 continue;
-            else if ( distance(this.x,this.y,balls[i].x,balls[i].y) <= this.r + balls[i].r  )
+            else if ( distance(this.x,this.y,balls[i].x,balls[i].y) <= this.r + balls[i].r + 3 )
             { 
-                // resolveCollision(this.balls[i]);  
+                resolveCollision(this,balls[i]);  
              }
         }    
         this.draw();
@@ -324,22 +367,24 @@ function Circle(x,y,r,c){
                     burstAudio();
                     count ++;
                     dispScore(count);
+                    ballArea -= Math.PI*this.r*this.r;
                 }
         }
 
 }
 
     function burst() {
-        for(var i=0;i<balls.length;i++)
+        for(let i=0;i<balls.length;i++)
             balls[i].click(event);
     }
 
 function update(){
-   
-//    render = setInterval( function(){
-//        ctx.clearRect(0,0,canvas.width,canvas.height);
-//     //    areaCheck();
-//     for (var i=0;i<balls.length;i++)
-//         balls[i].animate();
-//    },16);
+    
+   render = setInterval( function(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for (var i=0;i<balls.length;i++)
+        balls[i].animate();
+   },16);
+
+   areaCheck();
 }
